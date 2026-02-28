@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8"><title>Hospital Dashboard - BloodLink</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hospital-header {
+      background: linear-gradient(135deg, #1a5276, #2980b9);
+      color: white; padding: 20px 30px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .priority-badge-critical { background:#e74c3c; color:white; padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:bold; }
+    .priority-badge-urgent   { background:#e67e22; color:white; padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:bold; }
+    .priority-badge-needed   { background:#f1c40f; color:#333;  padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:bold; }
+    .stat-card { background:white; border-radius:12px; padding:20px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.08); flex:1; min-width:100px; }
+    .stat-card .number { font-size:2rem; font-weight:bold; color:#2980b9; }
+    .stat-card .label  { font-size:0.85rem; color:#888; margin-top:5px; }
+    .priority-card { border-radius:12px; padding:15px; margin-bottom:10px; border-left:5px solid; background:white; box-shadow:0 2px 8px rgba(0,0,0,0.07); display:flex; justify-content:space-between; align-items:center; }
+    .priority-card.critical { border-left-color:#e74c3c; background:#fff8f8; }
+    .priority-card.urgent   { border-left-color:#e67e22; background:#fffaf5; }
+    .priority-card.needed   { border-left-color:#f1c40f; background:#fffef0; }
+    .form-group { margin-bottom:15px; }
+    .form-group label { display:block; margin-bottom:5px; font-weight:500; color:#555; }
+    .form-group input, .form-group select { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size:0.95rem; }
+  </style>
+</head><body>
+
+<!-- TOP HEADER WITH HOSPITAL NAME -->
+<div class="hospital-header">
+  <div>
+    <h1 style="margin:0;font-size:1.5rem">🏥 <span id="displayHospitalName">Hospital</span></h1>
+    <p style="margin:4px 0 0;opacity:0.8;font-size:0.85rem">BloodLink Kerala — Hospital Dashboard</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:15px">
+    <button onclick="logout()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 18px;border-radius:20px;cursor:pointer;font-weight:bold">
+      🚪 Logout
+    </button>
+  </div>
+</div>
+
+<div style="display:flex;min-height:calc(100vh - 80px)">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h3>Navigation</h3>
+    <div class="nav-item active" id="nav-home"     onclick="showSection('home')">🏠 Home</div>
+    <div class="nav-item"        id="nav-newreq"   onclick="showSection('newreq')">➕ New Patient Request</div>
+    <div class="nav-item"        id="nav-requests" onclick="showSection('requests')">📋 Requests History</div>
+    <div class="nav-item"        id="nav-donors"   onclick="showSection('donors')">🩸 Find Donors</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content" style="background:#f8f9fa">
+
+    <!-- HOME -->
+    <div id="section-home">
+      <h2 style="margin-bottom:20px">Welcome, <span id="welcomeName">Hospital</span> 👋</h2>
+      <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap">
+        <div class="stat-card">
+          <div class="number" id="statTotal">0</div>
+          <div class="label">Total Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:#e74c3c" id="statCritical">0</div>
+          <div class="label">Critical</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:#e67e22" id="statUrgent">0</div>
+          <div class="label">Urgent</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:#27ae60" id="statOpen">0</div>
+          <div class="label">Open</div>
+        </div>
+
+
+      </div>
+      <h3 style="margin-bottom:12px">🕐 Recent Requests</h3>
+      <div id="recentRequests"><p style="color:#888">Loading...</p></div>
+      <div style="margin-top:20px">
+        <button type="button" onclick="showSection('newreq')" class="btn-primary" style="font-size:1rem;padding:14px 30px">
+          ➕ Create New Patient Request
+        </button>
+      </div>
+    </div>
+
+    <!-- NEW REQUEST -->
+    <div id="section-newreq" class="hidden">
+      <h2 style="margin-bottom:5px">➕ New Patient Blood Request</h2>
+      <p style="color:#888;margin-bottom:20px">Critical requests will show as red emergency banner on ALL donor dashboards.</p>
+      <div style="background:white;border-radius:12px;padding:25px;box-shadow:0 2px 10px rgba(0,0,0,0.08);max-width:600px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+          <div class="form-group">
+            <label>👤 Patient Name</label>
+            <input id="patientName" type="text" placeholder="Full name">
+          </div>
+          <div class="form-group">
+            <label>🎂 Age</label>
+            <input id="patientAge" type="number" placeholder="Age" min="1" max="120">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+          <div class="form-group">
+            <label>⚧ Gender</label>
+            <select id="patientGender">
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>🩸 Blood Group Needed</label>
+            <select id="bloodGroup">
+              <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+          <div class="form-group">
+            <label>🧪 Units Needed</label>
+            <input id="unitsNeeded" type="number" value="1" min="1" max="20">
+          </div>
+          <div class="form-group">
+            <label>🏥 Ward / Department</label>
+            <input id="ward" type="text" placeholder="e.g. ICU, Emergency">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>🚨 Priority Level</label>
+          <select id="priority" onchange="updatePriorityPreview()">
+            <option value="critical">🟥 Critical — Within 6 hours</option>
+            <option value="urgent">🟧 Urgent — Within 24 hours</option>
+            <option value="needed">🟨 Needed — Within 2–3 days</option>
+          </select>
+        </div>
+        <div id="priorityPreview" style="background:#e74c3c;color:white;padding:12px;border-radius:8px;margin-bottom:15px;font-weight:bold;text-align:center;font-size:0.9rem">
+          🚨 This request will appear as a RED EMERGENCY BANNER on all donor dashboards
+        </div>
+        <div class="form-group">
+          <label>📝 Additional Notes</label>
+          <input id="notes" type="text" placeholder="Any special requirements">
+        </div>
+        <button type="button" onclick="submitRequest()" class="btn-primary" style="width:100%;padding:14px;font-size:1rem">
+          🚀 Submit Request & Notify Donors
+        </button>
+        <p id="requestError" style="color:red;margin-top:10px;text-align:center"></p>
+      </div>
+    </div>
+
+    <!-- MY REQUESTS -->
+<div id="section-requests" class="hidden">
+  <h2 style="margin-bottom:15px">📋 Request History</h2>
+  <div id="requestsList"><p style="color:#888">Loading...</p></div>
+</div>
+
+    <!-- FIND DONORS -->
+    <div id="section-donors" class="hidden">
+      <h2 style="margin-bottom:15px">🩸 Find Matching Donors</h2>
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+        <select id="searchBG" style="padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95rem">
+          <option value="">-- Select Blood Group --</option>
+          <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+        </select>
+        <button type="button" onclick="searchDonors()" class="btn-primary">🔍 Search Donors</button>
+      </div>
+      <div id="donorResults"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+    
+const API   = 'http://127.0.0.1:5000/api';
+const token = localStorage.getItem('token');
+const hospitalName = localStorage.getItem('name') || 'Hospital';
+
+if (!token) window.location.href = 'login.html';
+
+document.getElementById('displayHospitalName').textContent = hospitalName;
+document.getElementById('welcomeName').textContent = hospitalName;
+
+function showSection(sectionName) {
+  document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('section-' + sectionName).classList.remove('hidden');
+  document.getElementById('nav-' + sectionName).classList.add('active');
+  if (sectionName === 'home')     loadRequests(true);
+  if (sectionName === 'requests') loadRequests(false);
+}
+
+function updatePriorityPreview() {
+  const p = document.getElementById('priority').value;
+  const preview = document.getElementById('priorityPreview');
+  if (p === 'critical') {
+    preview.style.background = '#e74c3c';
+    preview.style.color = 'white';
+    preview.textContent = '🚨 This request will appear as a RED EMERGENCY BANNER on all donor dashboards';
+  } else if (p === 'urgent') {
+    preview.style.background = '#e67e22';
+    preview.style.color = 'white';
+    preview.textContent = '⚠️ This request will appear in the urgent list on donor dashboards';
+  } else {
+    preview.style.background = '#fff9c4';
+    preview.style.color = '#333';
+    preview.textContent = '📋 This request will appear in the standard donations needed list';
+  }
+}
+
+async function loadRequests(homeMode = false) {
+  try {
+    const res = await fetch(`${API}/hospital/requests`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      throw new Error('API error ' + res.status);
+    }
+
+    const data = await res.json();
+
+    document.getElementById('statTotal').textContent    = data.length;
+    document.getElementById('statCritical').textContent = data.filter(r => r.priority === 'critical').length;
+    document.getElementById('statUrgent').textContent   = data.filter(r => r.priority === 'urgent').length;
+    document.getElementById('statOpen').textContent     = data.filter(r => r.status === 'open').length;
+
+    const html = data.length === 0
+      ? `<div style="text-align:center;padding:40px;color:#888">
+           <div style="font-size:3rem">📋</div>
+           <p style="margin-top:10px">No requests yet.</p>
+           <button onclick="showSection('newreq')" class="btn-primary" style="margin-top:10px">
+             ➕ Create First Request
+           </button>
+         </div>`
+      : data.map(r => `
+          <div class="priority-card ${r.priority}">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+                <span class="blood-group-badge">${r.blood_group}</span>
+                <strong>${r.patient_name}</strong>
+                <span class="priority-badge-${r.priority}">${r.priority.toUpperCase()}</span>
+              </div>
+              <div style="color:#666;font-size:0.85rem">
+                🧪 Units: <strong>${r.units_needed}</strong> &nbsp;|&nbsp;
+                Status: <strong>${r.status}</strong>
+              </div>
+              <div style="color:#aaa;font-size:0.8rem;margin-top:3px">
+                🕐 ${new Date(r.created_at).toLocaleString()}
+              </div>
+            </div>
+            <button onclick="goFindDonors('${r.blood_group}')" class="btn-primary" style="font-size:0.85rem;padding:8px 16px">
+              🔍 Find Donors
+            </button>
+          </div>`).join('');
+
+    document.getElementById('recentRequests').innerHTML = html;
+    document.getElementById('requestsList').innerHTML   = html;
+
+  } catch(err) {
+    console.error('loadRequests error:', err);
+    // Show empty state instead of error
+    const emptyHtml = `
+      <div style="text-align:center;padding:40px;color:#888">
+        <div style="font-size:3rem">📋</div>
+        <p style="margin-top:10px">No requests found or Flask may not be running.</p>
+        <button onclick="showSection('newreq')" class="btn-primary" style="margin-top:10px">
+          ➕ Create New Request
+        </button>
+      </div>`;
+    document.getElementById('recentRequests').innerHTML = emptyHtml;
+    document.getElementById('requestsList').innerHTML   = emptyHtml;
+  }
+}
+
+async function submitRequest() {
+  const patientName = document.getElementById('patientName').value.trim();
+  if (!patientName) {
+    document.getElementById('requestError').textContent = '⚠️ Please enter patient name';
+    return;
+  }
+  const body = {
+    patient_name: patientName,
+    age:          parseInt(document.getElementById('patientAge').value) || 0,
+    gender:       document.getElementById('patientGender').value,
+    blood_group:  document.getElementById('bloodGroup').value,
+    units_needed: parseInt(document.getElementById('unitsNeeded').value) || 1,
+    priority:     document.getElementById('priority').value,
+    hospital:     hospitalName,
+    location:     'Kerala',
+    latitude:     10.5,
+    longitude:    76.2
+  };
+  try {
+    const res  = await fetch(`${API}/hospital/request`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body:    JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (res.ok) {
+      const msg = body.priority === 'critical'
+        ? '🚨 Critical request submitted! RED BANNER will appear on all donor dashboards!'
+        : '✅ Request submitted! Matching donors have been notified.';
+      alert(msg);
+      document.getElementById('patientName').value = '';
+      document.getElementById('patientAge').value  = '';
+      document.getElementById('unitsNeeded').value = '1';
+      document.getElementById('notes').value       = '';
+      showSection('requests');
+    } else {
+      document.getElementById('requestError').textContent = data.error || 'Failed to submit';
+    }
+  } catch(err) {
+    document.getElementById('requestError').textContent = 'Cannot connect to server.';
+  }
+}
+
+
+function goFindDonors(bg) {
+  showSection('donors');
+  document.getElementById('searchBG').value = bg;
+  searchDonors();
+}
+
+async function searchDonors() {
+  const bg = document.getElementById('searchBG').value;
+  const el = document.getElementById('donorResults');
+  if (!bg) { el.innerHTML = '<p style="color:#888">Please select a blood group.</p>'; return; }
+  el.innerHTML = '<p style="color:#888">🔍 Searching...</p>';
+  try {
+    const res    = await fetch(`${API}/donor/leaderboard`);
+    const donors = await res.json();
+    const filtered = donors.filter(d => d.blood_group === bg);
+    if (!filtered.length) {
+      el.innerHTML = `<p style="color:#888">No donors found with blood group ${bg}.</p>`;
+      return;
+    }
+    el.innerHTML = `
+      <p style="color:#27ae60;margin-bottom:15px;font-weight:bold">
+        ✅ Found ${filtered.length} donor(s) for ${bg}
+      </p>
+      ${filtered.map(d => `
+        <div class="donor-match-card" style="margin-bottom:12px">
+          <div>
+            <strong>${d.name}</strong>
+            <div style="color:#666;font-size:0.9rem;margin-top:4px">
+              🩸 ${d.blood_group} &nbsp;|&nbsp; 🏆 ${d.points} pts
+            </div>
+          </div>
+          <span style="background:#e8f5e9;color:#27ae60;padding:6px 14px;border-radius:20px;font-size:0.85rem;font-weight:bold">
+            ✅ Available
+          </span>
+        </div>`).join('')}`;
+  } catch(err) {
+    el.innerHTML = '<p style="color:red">Error searching donors.</p>';
+  }
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = 'index.html';
+}
+
+loadRequests(true);
+</script>
+
+</body></html>

@@ -1,0 +1,86 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #fff5f5; color: #333; }
+
+/* NAVBAR */
+.navbar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #c0392b; padding: 15px 30px; color: white;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.logo { font-size: 1.5rem; font-weight: bold; }
+.btn-login { background: white; color: #c0392b; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+
+/* EMERGENCY BANNER */
+.emergency-banner {
+  background: #e74c3c; color: white; text-align: center;
+  padding: 12px; font-weight: bold; font-size: 1.1rem; animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+
+/* HERO */
+.hero { text-align: center; padding: 80px 20px; }
+.hero h1 { font-size: 2.5rem; color: #c0392b; margin-bottom: 15px; }
+.hero p { font-size: 1.2rem; color: #666; margin-bottom: 30px; }
+.hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+/* BUTTONS */
+.btn-primary { background: #c0392b; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 1rem; transition: transform 0.2s; }
+.btn-primary:hover { transform: scale(1.05); background: #a93226; }
+.btn-secondary { background: white; color: #c0392b; border: 2px solid #c0392b; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 1rem; }
+.btn-close { background: #888; color: white; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; float: right; }
+
+/* MODAL */
+.modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.modal.hidden { display: none; }
+.modal-content { background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; max-height: 80vh; overflow-y: auto; }
+.modal-content h2 { color: #c0392b; margin-bottom: 20px; }
+.modal-content input, .modal-content select { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; }
+
+/* DONOR DASHBOARD */
+.donor-layout { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; background: #2c3e50; color: white; padding: 20px 0; flex-shrink: 0; }
+.sidebar h3 { padding: 0 20px 15px; border-bottom: 1px solid #445; font-size: 0.9rem; color: #aaa; }
+.nav-item { padding: 12px 20px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 10px; }
+.nav-item:hover, .nav-item.active { background: #c0392b; }
+.main-content { flex: 1; padding: 20px; overflow-y: auto; }
+
+/* BLOOD CARDS */
+.blood-request-card { background: white; border-left: 4px solid #c0392b; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; }
+.blood-group-badge { background: #c0392b; color: white; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 1.1rem; }
+.priority-critical { border-left-color: #e74c3c; background: #fff0f0; }
+.priority-urgent { border-left-color: #e67e22; background: #fff8f0; }
+.priority-needed { border-left-color: #f1c40f; background: #fffde7; }
+
+/* REWARDS */
+.rewards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+.reward-item { background: white; border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.reward-item .points { color: #c0392b; font-weight: bold; font-size: 0.9rem; margin-top: 8px; }
+.badge-card { background: linear-gradient(135deg, #f39c12, #e74c3c); color: white; border-radius: 12px; padding: 20px; text-align: center; font-size: 2rem; }
+
+/* MAP */
+#map { height: 350px; border-radius: 12px; border: 2px solid #e0e0e0; }
+
+/* STOCK TABLE */
+.stock-table { width: 100%; border-collapse: collapse; }
+.stock-table th { background: #c0392b; color: white; padding: 12px; text-align: left; }
+.stock-table td { padding: 12px; border-bottom: 1px solid #eee; }
+.status-low { color: #e74c3c; font-weight: bold; }
+.status-stable { color: #27ae60; font-weight: bold; }
+
+/* VERIFIED TICK */
+.verified-tick { color: #e74c3c; font-size: 1.2rem; }
+
+/* FORMS */
+.form-container { background: white; padding: 30px; border-radius: 15px; max-width: 500px; margin: 40px auto; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.form-container h2 { color: #c0392b; text-align: center; margin-bottom: 25px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; }
+.form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+.checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+
+/* UTILITIES */
+.hidden { display: none !important; }
+.matched-donors { background: white; padding: 20px; margin: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.donor-match-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; }
+.points-bar { background: #eee; border-radius: 10px; height: 10px; }
+.points-fill { background: #c0392b; height: 100%; border-radius: 10px; transition: width 0.5s; }

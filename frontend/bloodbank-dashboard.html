@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8"><title>Blood Bank Dashboard - BloodLink</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .bb-header {
+      background: linear-gradient(135deg, #1a3a4a, #1abc9c);
+      color: white; padding: 20px 30px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .stock-card {
+      background: white; border-radius: 14px; padding: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 10px; position: relative; overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .stock-card:hover { transform: scale(1.03); }
+    .stock-card .bg-label {
+      font-size: 2rem; font-weight: 900; color: white;
+      background: #c0392b; width: 60px; height: 60px;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center;
+    }
+    .stock-card .units { font-size: 2.2rem; font-weight: bold; }
+    .stock-card .status-pill {
+      padding: 4px 14px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .status-critical { background:#fde8e8; color:#e74c3c; }
+    .status-low      { background:#fef3e2; color:#e67e22; }
+    .status-stable   { background:#e8f8f0; color:#27ae60; }
+    .status-good     { background:#e8f4fd; color:#2980b9; }
+    .progress-bar { width:100%; height:8px; background:#eee; border-radius:10px; overflow:hidden; }
+    .progress-fill { height:100%; border-radius:10px; transition: width 0.5s; }
+    .update-input {
+      width: 70px; padding: 6px; border: 1px solid #ddd;
+      border-radius: 8px; text-align: center; font-size: 1rem;
+    }
+    .stat-box {
+      background: white; border-radius: 12px; padding: 18px 24px;
+      text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.07); flex: 1;
+    }
+    .stat-box .num { font-size: 2rem; font-weight: bold; }
+    .alert-item {
+      background: #fff0f0; border-left: 4px solid #e74c3c;
+      border-radius: 8px; padding: 12px 16px; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+  </style>
+</head><body>
+
+<!-- HEADER -->
+<div class="bb-header">
+  <div>
+    <h1 style="margin:0;font-size:1.5rem">🏦 <span id="bbName">Blood Bank</span></h1>
+    <p style="margin:4px 0 0;opacity:0.8;font-size:0.85rem">BloodLink Kerala — Blood Bank Dashboard</p>
+  </div>
+  <button onclick="logout()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 18px;border-radius:20px;cursor:pointer;font-weight:bold">
+    🚪 Logout
+  </button>
+</div>
+
+<div style="display:flex;min-height:calc(100vh - 74px)">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h3>Navigation</h3>
+    <div class="nav-item active" id="nav-stock"   onclick="showSection('stock')">🩸 Blood Stock</div>
+    <div class="nav-item"        id="nav-update"  onclick="showSection('update')">✏️ Update Stock</div>
+    <div class="nav-item"        id="nav-alerts"  onclick="showSection('alerts')">🚨 Alerts</div>
+    <div class="nav-item"        id="nav-history" onclick="showSection('history')">📋 Update History</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content" style="background:#f8f9fa">
+
+    <!-- BLOOD STOCK SECTION -->
+    <div id="section-stock">
+      <h2 style="margin-bottom:5px">🩸 Blood Stock Levels</h2>
+      <p style="color:#888;margin-bottom:20px">Live inventory of all blood groups</p>
+
+      <!-- SUMMARY STATS -->
+      <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap">
+        <div class="stat-box">
+          <div class="num" id="totalUnits" style="color:#2980b9">0</div>
+          <div style="color:#888;font-size:0.85rem">Total Units</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="criticalCount" style="color:#e74c3c">0</div>
+          <div style="color:#888;font-size:0.85rem">Critical Groups</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="lowCount" style="color:#e67e22">0</div>
+          <div style="color:#888;font-size:0.85rem">Low Groups</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="stableCount" style="color:#27ae60">0</div>
+          <div style="color:#888;font-size:0.85rem">Stable Groups</div>
+        </div>
+      </div>
+
+      <!-- STOCK GRID -->
+      <div id="stockGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px">
+        <p style="color:#888">Loading...</p>
+      </div>
+    </div>
+
+    <!-- UPDATE STOCK SECTION -->
+    <div id="section-update" class="hidden">
+      <h2 style="margin-bottom:5px">✏️ Update Blood Stock</h2>
+      <p style="color:#888;margin-bottom:20px">Set or adjust units for each blood group</p>
+
+      <div style="background:white;border-radius:14px;padding:25px;box-shadow:0 2px 10px rgba(0,0,0,0.08);max-width:650px">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="background:#f8f9fa">
+              <th style="padding:12px;text-align:left;border-radius:8px 0 0 8px">Blood Group</th>
+              <th style="padding:12px;text-align:center">Current Units</th>
+              <th style="padding:12px;text-align:center">New Units</th>
+              <th style="padding:12px;text-align:center">Quick Add</th>
+              <th style="padding:12px;text-align:center;border-radius:0 8px 8px 0">Action</th>
+            </tr>
+          </thead>
+          <tbody id="updateTableBody"></tbody>
+        </table>
+        <button onclick="saveAllStock()" class="btn-primary" style="width:100%;margin-top:20px;padding:12px;font-size:1rem">
+          💾 Save All Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- ALERTS SECTION -->
+    <div id="section-alerts" class="hidden">
+      <h2 style="margin-bottom:5px">🚨 Low Stock Alerts</h2>
+      <p style="color:#888;margin-bottom:20px">Blood groups that need urgent replenishment</p>
+      <div id="alertsList"><p style="color:#888">Loading...</p></div>
+    </div>
+
+    <!-- HISTORY SECTION -->
+    <div id="section-history" class="hidden">
+      <h2 style="margin-bottom:15px">📋 Update History</h2>
+      <div id="historyList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API  = 'http://127.0.0.1:5000/api';
+const token = localStorage.getItem('token');
+if (!token) window.location.href = 'login.html';
+
+document.getElementById('bbName').textContent = localStorage.getItem('name') || 'Blood Bank';
+
+// Local stock data (persisted in localStorage for demo)
+const BLOOD_GROUPS = ['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const THRESHOLD = { critical: 3, low: 6, stable: 10 };
+
+function getStock() {
+  const saved = localStorage.getItem('bbStock');
+  if (saved) return JSON.parse(saved);
+  // Default starting stock
+  const defaults = { 'A+':12,'A-':4,'B+':8,'B-':2,'AB+':15,'AB-':5,'O+':3,'O-':1 };
+  localStorage.setItem('bbStock', JSON.stringify(defaults));
+  return defaults;
+}
+
+function saveStock(stock) {
+  localStorage.setItem('bbStock', JSON.stringify(stock));
+  // Save history
+  const history = JSON.parse(localStorage.getItem('bbHistory') || '[]');
+  history.unshift({ time: new Date().toLocaleString(), stock: {...stock} });
+  if (history.length > 20) history.pop();
+  localStorage.setItem('bbHistory', JSON.stringify(history));
+}
+
+function getStatusInfo(units) {
+  if (units <= THRESHOLD.critical) return { label:'🔴 Critical', class:'status-critical', color:'#e74c3c' };
+  if (units <= THRESHOLD.low)      return { label:'🟠 Low',      class:'status-low',      color:'#e67e22' };
+  if (units <= THRESHOLD.stable)   return { label:'🟡 Moderate', class:'status-stable',   color:'#f39c12' };
+  return                                   { label:'🟢 Good',     class:'status-good',     color:'#27ae60' };
+}
+
+function getProgressPct(units) {
+  return Math.min((units / 20) * 100, 100);
+}
+
+function showSection(name) {
+  document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('section-' + name).classList.remove('hidden');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'stock')   renderStock();
+  if (name === 'update')  renderUpdateTable();
+  if (name === 'alerts')  renderAlerts();
+  if (name === 'history') renderHistory();
+}
+
+function renderStock() {
+  const stock = getStock();
+  const units = Object.values(stock);
+  const total = units.reduce((a,b) => a+b, 0);
+  const critical = BLOOD_GROUPS.filter(bg => stock[bg] <= THRESHOLD.critical).length;
+  const low      = BLOOD_GROUPS.filter(bg => stock[bg] > THRESHOLD.critical && stock[bg] <= THRESHOLD.low).length;
+  const stable   = BLOOD_GROUPS.filter(bg => stock[bg] > THRESHOLD.low).length;
+
+  document.getElementById('totalUnits').textContent    = total;
+  document.getElementById('criticalCount').textContent = critical;
+  document.getElementById('lowCount').textContent      = low;
+  document.getElementById('stableCount').textContent   = stable;
+
+  document.getElementById('stockGrid').innerHTML = BLOOD_GROUPS.map(bg => {
+    const u    = stock[bg] || 0;
+    const info = getStatusInfo(u);
+    const pct  = getProgressPct(u);
+    return `
+      <div class="stock-card">
+        <div class="bg-label">${bg}</div>
+        <div class="units" style="color:${info.color}">${u}</div>
+        <div style="color:#888;font-size:0.8rem">units available</div>
+        <span class="status-pill ${info.class}">${info.label}</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${pct}%;background:${info.color}"></div>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:5px">
+          <button onclick="quickChange('${bg}',-1)" style="background:#e74c3c;color:white;border:none;padding:4px 10px;border-radius:8px;cursor:pointer;font-size:1rem">−</button>
+          <button onclick="quickChange('${bg}',1)"  style="background:#27ae60;color:white;border:none;padding:4px 10px;border-radius:8px;cursor:pointer;font-size:1rem">+</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function quickChange(bg, delta) {
+  const stock = getStock();
+  stock[bg] = Math.max(0, (stock[bg] || 0) + delta);
+  saveStock(stock);
+  renderStock();
+  checkAlerts(stock, bg);
+}
+
+function renderUpdateTable() {
+  const stock = getStock();
+  document.getElementById('updateTableBody').innerHTML = BLOOD_GROUPS.map(bg => {
+    const u    = stock[bg] || 0;
+    const info = getStatusInfo(u);
+    return `
+      <tr style="border-bottom:1px solid #f0f0f0">
+        <td style="padding:12px">
+          <span style="background:#c0392b;color:white;padding:4px 12px;border-radius:20px;font-weight:bold">${bg}</span>
+        </td>
+        <td style="padding:12px;text-align:center">
+          <span style="color:${info.color};font-weight:bold;font-size:1.1rem">${u}</span>
+          <span class="status-pill ${info.class}" style="margin-left:6px;font-size:0.7rem">${info.label}</span>
+        </td>
+        <td style="padding:12px;text-align:center">
+          <input type="number" id="input-${bg}" class="update-input" value="${u}" min="0" max="999">
+        </td>
+        <td style="padding:12px;text-align:center">
+          <div style="display:flex;gap:4px;justify-content:center">
+            <button onclick="adjustInput('${bg}',-5)" style="background:#fde8e8;color:#e74c3c;border:none;padding:4px 8px;border-radius:6px;cursor:pointer">-5</button>
+            <button onclick="adjustInput('${bg}',-1)" style="background:#fde8e8;color:#e74c3c;border:none;padding:4px 8px;border-radius:6px;cursor:pointer">-1</button>
+            <button onclick="adjustInput('${bg}',1)"  style="background:#e8f8f0;color:#27ae60;border:none;padding:4px 8px;border-radius:6px;cursor:pointer">+1</button>
+            <button onclick="adjustInput('${bg}',5)"  style="background:#e8f8f0;color:#27ae60;border:none;padding:4px 8px;border-radius:6px;cursor:pointer">+5</button>
+          </div>
+        </td>
+        <td style="padding:12px;text-align:center">
+          <button onclick="saveSingle('${bg}')" style="background:#2980b9;color:white;border:none;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.85rem">
+            💾 Save
+          </button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function adjustInput(bg, delta) {
+  const input = document.getElementById('input-' + bg);
+  input.value = Math.max(0, parseInt(input.value || 0) + delta);
+}
+
+function saveSingle(bg) {
+  const stock = getStock();
+  const newVal = parseInt(document.getElementById('input-' + bg).value) || 0;
+  stock[bg] = newVal;
+  saveStock(stock);
+  alert(`✅ ${bg} updated to ${newVal} units`);
+  renderUpdateTable();
+  checkAlerts(stock, bg);
+}
+
+function saveAllStock() {
+  const stock = getStock();
+  BLOOD_GROUPS.forEach(bg => {
+    const val = parseInt(document.getElementById('input-' + bg).value) || 0;
+    stock[bg] = val;
+  });
+  saveStock(stock);
+  alert('✅ All blood stock updated successfully!');
+  renderUpdateTable();
+}
+
+function checkAlerts(stock, bg) {
+  if (stock[bg] <= THRESHOLD.critical) {
+    alert(`🚨 CRITICAL ALERT: ${bg} blood is critically low (${stock[bg]} units)! Donors are being notified.`);
+  }
+}
+
+function renderAlerts() {
+  const stock = getStock();
+  const alerts = BLOOD_GROUPS
+    .filter(bg => stock[bg] <= THRESHOLD.low)
+    .sort((a,b) => stock[a] - stock[b]);
+
+  if (!alerts.length) {
+    document.getElementById('alertsList').innerHTML = `
+      <div style="text-align:center;padding:40px;color:#27ae60">
+        <div style="font-size:3rem">✅</div>
+        <p style="font-size:1.1rem;margin-top:10px">All blood groups are at stable levels!</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('alertsList').innerHTML = alerts.map(bg => {
+    const u    = stock[bg];
+    const info = getStatusInfo(u);
+    return `
+      <div class="alert-item">
+        <div>
+          <span style="background:#c0392b;color:white;padding:4px 12px;border-radius:20px;font-weight:bold;margin-right:10px">${bg}</span>
+          <strong>${u} units remaining</strong>
+          <span class="status-pill ${info.class}" style="margin-left:8px">${info.label}</span>
+          <div style="color:#888;font-size:0.85rem;margin-top:5px">
+            ${u <= THRESHOLD.critical
+              ? '⚠️ Urgent: Donors with this blood group are being notified automatically'
+              : '⚠️ Low: Consider reaching out to matching donors soon'}
+          </div>
+        </div>
+        <button onclick="showSection('update')" style="background:#e74c3c;color:white;border:none;padding:8px 16px;border-radius:10px;cursor:pointer;white-space:nowrap">
+          Update Stock
+        </button>
+      </div>`;
+  }).join('');
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('bbHistory') || '[]');
+  if (!history.length) {
+    document.getElementById('historyList').innerHTML = '<p style="color:#888">No updates yet.</p>';
+    return;
+  }
+  document.getElementById('historyList').innerHTML = history.map((h,i) => `
+    <div style="background:white;border-radius:10px;padding:15px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <strong>Update #${history.length - i}</strong>
+        <span style="color:#888;font-size:0.85rem">🕐 ${h.time}</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${BLOOD_GROUPS.map(bg => {
+          const u    = h.stock[bg] || 0;
+          const info = getStatusInfo(u);
+          return `<span style="background:${info.color}22;color:${info.color};padding:3px 10px;border-radius:12px;font-size:0.85rem;font-weight:bold">
+            ${bg}: ${u}
+          </span>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = 'index.html';
+}
+
+renderStock();
+</script>
+</body></html>

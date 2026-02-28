@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8"><title>Donor Dashboard - BloodLink</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head><body>
+<!-- EMERGENCY BANNER -->
+<div id="emergencyBanner" class="emergency-banner hidden">
+  🚨 CRITICAL EMERGENCY: <span id="emergencyText"></span>
+</div>
+
+<div class="donor-layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div style="padding:20px;border-bottom:1px solid #445">
+      <div style="font-size:1.2rem;font-weight:bold" id="donorName">👤 Donor</div>
+      <div style="font-size:0.85rem;color:#aaa;margin-top:5px" id="donorPoints">0 Points</div>
+      <span id="verifiedBadge" class="hidden verified-tick" title="Verified Donor">✅ Verified</span>
+    </div>
+    <h3>Navigation</h3>
+    <div class="nav-item active" onclick="showSection('dashboard')">🏠 Dashboard</div>
+    <div class="nav-item" onclick="showSection('history')">📋 Donation History</div>
+    <div class="nav-item" onclick="showSection('requests')">🔔 Requests <span id="notifBadge" style="background:#e74c3c;color:white;border-radius:50%;padding:1px 6px;font-size:0.8rem;margin-left:5px"></span></div>
+    <div class="nav-item" onclick="showSection('bloodinfo')">🩸 Blood Group Info</div>
+    <div class="nav-item" onclick="showSection('rewards')">🎁 Rewards</div>
+    <div class="nav-item" onclick="showSection('verify')">✅ Get Verified</div>
+    <div class="nav-item" style="margin-top:auto;color:#e74c3c" onclick="logout()">🚪 Logout</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- DASHBOARD SECTION -->
+    <div id="section-dashboard">
+      <h2>🩸 Blood Donation Needed</h2>
+      <div id="donationRequests" style="margin-top:15px"></div>
+      <hr style="margin:30px 0">
+      <h2>📍 Patients Near You</h2>
+      <div id="map"></div>
+    </div>
+
+    <!-- DONATION HISTORY -->
+    <div id="section-history" class="hidden">
+      <h2>📋 Your Donation History</h2>
+      <div id="historyList" style="margin-top:15px"></div>
+    </div>
+
+    <!-- REQUESTS/NOTIFICATIONS -->
+    <div id="section-requests" class="hidden">
+      <h2>🔔 Incoming Requests</h2>
+      <div id="notificationsList" style="margin-top:15px"></div>
+    </div>
+
+    <!-- BLOOD GROUP INFO -->
+    <div id="section-bloodinfo" class="hidden">
+  <h2>🩸 Blood Group Compatibility</h2>
+  <div id="bloodInfoContent"></div>
+</div>
+
+    <!-- REWARDS -->
+    <div id="section-rewards" class="hidden">
+  <h2>🎁 Rewards & Badges</h2>
+
+  <!-- SIMULATOR -->
+  <div style="background:#fff8e1;border:2px dashed #f39c12;border-radius:12px;padding:15px;margin-bottom:20px">
+    <h4 style="color:#e67e22;margin-bottom:10px">🧪 Demo Simulator</h4>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <button onclick="addPoints(10)"  class="sim-btn" style="background:#27ae60">+10 pts</button>
+      <button onclick="addPoints(50)"  class="sim-btn" style="background:#2980b9">+50 pts</button>
+      <button onclick="addPoints(100)" class="sim-btn" style="background:#8e44ad">+100 pts</button>
+      <button onclick="addPoints(500)" class="sim-btn" style="background:#e67e22">+500 pts</button>
+      <button onclick="resetPoints()"  class="sim-btn" style="background:#e74c3c">Reset</button>
+      <span style="font-size:0.9rem;color:#888">Points: <strong id="simPointsDisplay">0</strong></span>
+    </div>
+  </div>
+
+  <div style="margin-bottom:20px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+      <span>Progress</span><span id="pointsDisplay">0 / 2000 pts</span>
+    </div>
+    <div class="points-bar"><div class="points-fill" id="pointsFill" style="width:0%"></div></div>
+  </div>
+  <h3>🏅 My Badges</h3>
+  <div id="badgesGrid" class="rewards-grid" style="margin-bottom:25px"></div>
+  <h3>🎁 Reward Catalogue</h3>
+  <div id="rewardsCatalogue"></div>
+</div>
+
+    <!-- VERIFY -->
+    <div id="section-verify" class="hidden">
+      <h2>✅ Donor Verification</h2>
+      <p style="margin-bottom:20px;color:#666">Submit your blood test results and donation history to get a verified badge.</p>
+      <div class="form-container" style="margin:0;box-shadow:none">
+        <div class="form-group"><label>Blood Test Result (description)</label><input id="bloodTestResult" type="text" placeholder="e.g., Clean bill of health, tested 2024-01-15"></div>
+        <div class="form-group"><label>Previous Donation IDs / Certificate</label><input id="prevDonations" type="text" placeholder="e.g., BloodBank/2024/0123"></div>
+        <div class="form-group"><label>Government ID Number</label><input id="govId" type="text" placeholder="Aadhaar / Voter ID"></div>
+        <button onclick="submitVerification()" class="btn-primary">Submit for Verification</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/donor.js"></script>
+</body></html>

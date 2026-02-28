@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8"><title>Eligibility Test - BloodLink</title>
+  <link rel="stylesheet" href="css/style.css">
+</head><body>
+<nav class="navbar"><div class="logo">🩸 BloodLink Kerala</div></nav>
+<div class="form-container" style="max-width:550px">
+  <h2>🧪 Eligibility Test</h2>
+  <p style="color:#666;margin-bottom:20px">Please answer honestly. This helps ensure donor safety.</p>
+  
+  <div class="checkbox-group"><input type="checkbox" id="q1"><label for="q1">I have consumed alcohol in the last 48 hours</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="q2"><label for="q2">I currently have a fever or cold</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="q3"><label for="q3">I am currently on prescription medication</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="q4"><label for="q4">I am pregnant or recently gave birth (within 6 months)</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="q5"><label for="q5">I have gotten a tattoo or piercing in the last 6 months</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="q6"><label for="q6">I weigh less than 50 kg</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="q7"><label for="q7">I have donated blood within the last 90 days</label></div>
+  
+  <button onclick="submitEligibility()" class="btn-primary" style="width:100%;margin-top:20px">Check Eligibility</button>
+  <div id="eligibilityResult" style="margin-top:20px;padding:15px;border-radius:10px;display:none"></div>
+</div>
+<script src="js/auth.js"></script>
+<script>
+function submitEligibility() {
+  const checks = ['q1','q2','q3','q4','q5','q6','q7'];
+  const disqualifiers = checks.filter(id => document.getElementById(id).checked);
+  const resultDiv = document.getElementById('eligibilityResult');
+  resultDiv.style.display = 'block';
+  if (disqualifiers.length > 0) {
+    resultDiv.style.background = '#fff0f0';
+    resultDiv.style.border = '2px solid #e74c3c';
+    resultDiv.innerHTML = `<h3 style="color:#e74c3c">❌ Not Eligible</h3><p>You don't qualify to donate at this time. Please try again when conditions change.</p>`;
+  } else {
+    resultDiv.style.background = '#f0fff4';
+    resultDiv.style.border = '2px solid #27ae60';
+    resultDiv.innerHTML = `<h3 style="color:#27ae60">✅ You are Eligible!</h3><p>Redirecting to confirm donation...</p>`;
+    const requestId = localStorage.getItem('pendingRequestId');
+    setTimeout(() => confirmDonation(requestId), 2000);
+  }
+}
+
+async function confirmDonation(requestId) {
+  const token = localStorage.getItem('token');
+  await fetch('http://localhost:5000/api/donor/donate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    body: JSON.stringify({ request_id: requestId })
+  });
+  alert('🎉 Thank you for your donation! +10 points earned!');
+  window.location.href = 'donor-dashboard.html';
+}
+</script>
+</body></html>

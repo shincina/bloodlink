@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BloodLink Kerala</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0a0a 0%, #2c0a0a 40%, #c0392b 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 80px 20px 40px;
+      position: relative; overflow: hidden;
+    }
+
+    /* Animated blood drop background */
+    .hero::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(192,57,43,0.15) 0%, transparent 60%);
+      animation: pulse-bg 4s ease-in-out infinite;
+    }
+    @keyframes pulse-bg {
+      0%,100% { transform: scale(1); opacity: 0.5; }
+      50%      { transform: scale(1.1); opacity: 1; }
+    }
+
+    .hero-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white; padding: 6px 18px; border-radius: 30px;
+      font-size: 0.85rem; margin-bottom: 24px; display: inline-block;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800; color: white;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .hero h1 span { color: #ff6b6b; }
+
+    .hero-subtitle {
+      font-size: 1.15rem; color: rgba(255,255,255,0.75);
+      max-width: 500px; line-height: 1.7; margin-bottom: 40px;
+    }
+
+    .hero-buttons {
+      display: flex; gap: 15px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 60px;
+    }
+
+    /* DESCRIPTION SECTION */
+    .description-section {
+      background: white; padding: 80px 20px;
+    }
+    .desc-container {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-tag {
+      color: #c0392b; font-weight: 600; font-size: 0.85rem;
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; color: #1a1a1a; margin-bottom: 15px; line-height: 1.2;
+    }
+    .section-subtitle {
+      color: #666; font-size: 1.05rem; line-height: 1.8;
+      max-width: 650px; margin-bottom: 50px;
+    }
+
+    /* FEATURE CARDS */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px; margin-bottom: 70px;
+    }
+    .feature-card {
+      background: #fff; border-radius: 16px; padding: 28px;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(192,57,43,0.12);
+    }
+    .feature-icon {
+      font-size: 2.2rem; margin-bottom: 16px;
+      background: #fff0f0; width: 60px; height: 60px;
+      border-radius: 14px; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .feature-card p  { color: #666; font-size: 0.9rem; line-height: 1.7; }
+
+    /* HOW IT WORKS */
+    .how-section {
+      background: linear-gradient(135deg, #fff5f5, #fff);
+      padding: 80px 20px;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .step-card {
+      text-align: center; padding: 30px 20px;
+      background: white; border-radius: 16px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+    }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: #c0392b; color: white;
+      font-size: 1.2rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .step-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: #1a1a1a; }
+    .step-card p  { font-size: 0.85rem; color: #888; line-height: 1.6; }
+
+    /* STATS BANNER */
+    .stats-banner {
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      padding: 50px 20px;
+    }
+    .stats-grid {
+      display: flex; justify-content: center;
+      gap: 60px; flex-wrap: wrap; max-width: 900px; margin: 0 auto;
+    }
+    .stat-item { text-align: center; color: white; }
+    .stat-item .big { font-size: 3rem; font-weight: 800; line-height: 1; }
+    .stat-item .lbl { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; }
+
+    /* ROLES SECTION */
+    .roles-section { background: #1a1a1a; padding: 80px 20px; }
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 30px auto 0;
+    }
+    .role-card {
+      border-radius: 16px; padding: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s;
+    }
+    .role-card:hover { transform: translateY(-4px); }
+    .role-card.donor     { background: rgba(192,57,43,0.15); border-color: rgba(192,57,43,0.3); }
+    .role-card.hospital  { background: rgba(41,128,185,0.15); border-color: rgba(41,128,185,0.3); }
+    .role-card.bloodbank { background: rgba(39,174,96,0.15);  border-color: rgba(39,174,96,0.3); }
+    .role-card .role-icon { font-size: 2.5rem; margin-bottom: 15px; }
+    .role-card h3 { color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+    .role-card p  { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .role-btn {
+      display: inline-block; padding: 10px 22px;
+      border-radius: 25px; font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; border: none; transition: opacity 0.2s;
+    }
+    .role-btn:hover { opacity: 0.85; }
+    .role-btn.red   { background: #c0392b; color: white; }
+    .role-btn.blue  { background: #2980b9; color: white; }
+    .role-btn.green { background: #27ae60; color: white; }
+
+    /* FOOTER */
+    .footer {
+      background: #111; color: rgba(255,255,255,0.5);
+      text-align: center; padding: 30px 20px; font-size: 0.85rem;
+    }
+    .footer span { color: #e74c3c; }
+
+    /* MODAL */
+    .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:999; backdrop-filter:blur(4px); }
+    .modal.hidden { display:none; }
+    .modal-content { background:white; padding:30px; border-radius:20px; width:90%; max-width:450px; max-height:85vh; overflow-y:auto; }
+    .modal-content h2 { color:#c0392b; margin-bottom:20px; }
+    .modal-content input, .modal-content select { width:100%; padding:10px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px; font-size:0.95rem; box-sizing:border-box; }
+
+    .matched-donors { background:white; padding:20px; margin:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); }
+    .donor-match-card { display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid #eee; border-radius:8px; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(20,5,5,0.95);backdrop-filter:blur(10px)">
+  <div class="logo" style="color:white">🩸 BloodLink Kerala</div>
+  <button onclick="window.location.href='login.html'" class="btn-login">Login</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🩸 Kerala's Campus Blood Donation Network</div>
+  <h1>Save Lives.<br><span>Donate Blood.</span></h1>
+  <p class="hero-subtitle">
+    Connecting student donors across Kerala campuses with patients in need.
+    Every donation counts. Every second matters.
+  </p>
+  <div class="hero-buttons">
+    <button onclick="window.location.href='donor-register.html'" class="btn-primary" style="padding:14px 32px;font-size:1rem">
+      🩸 Register as Donor
+    </button>
+    <button onclick="window.location.href='login.html'" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.3);padding:14px 32px;border-radius:25px;font-size:1rem;cursor:pointer">
+      🏥 Hospital / Blood Bank Login
+    </button>
+  </div>
+
+  <!-- SCROLL INDICATOR -->
+  <div style="position:absolute;bottom:30px;color:rgba(255,255,255,0.4);font-size:0.8rem;animation:bounce 2s infinite">
+    ↓ Learn More
+  </div>
+  <style>@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}</style>
+</section>
+
+<!-- STATS BANNER -->
+<div class="stats-banner">
+  <div class="stats-grid">
+    <div class="stat-item"><div class="big">14</div><div class="lbl">Kerala Districts Covered</div></div>
+    <div class="stat-item"><div class="big">8</div><div class="lbl">Blood Groups Supported</div></div>
+    <div class="stat-item"><div class="big">3</div><div class="lbl">User Roles</div></div>
+    <div class="stat-item"><div class="big">24/7</div><div class="lbl">Emergency Alerts</div></div>
+  </div>
+</div>
+
+<!-- DESCRIPTION / FEATURES -->
+<section class="description-section">
+  <div class="desc-container">
+    <p class="section-tag">What is BloodLink Kerala?</p>
+    <h2 class="section-title">A Smart Blood Donation<br>Ecosystem for Kerala</h2>
+    <p class="section-subtitle">
+      BloodLink Kerala is a real-time blood donation platform that bridges the gap between
+      student donors on Kerala campuses, hospitals in need, and blood banks managing inventory.
+      Built to save lives — fast, transparent, and rewarding.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🚨</div>
+        <h3>Emergency Alerts</h3>
+        <p>Critical blood requests appear as red banners instantly on all donor dashboards. No delay, no missed emergencies.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>Live Map</h3>
+        <p>See patients needing blood plotted on a live Kerala map. Color-coded by urgency — critical, urgent, or needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎁</div>
+        <h3>Rewards System</h3>
+        <p>Earn 10 points per donation. Redeem for real rewards — from snacks to laptops to international trips.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏅</div>
+        <h3>Donor Badges</h3>
+        <p>Unlock badges as you donate more — from First Drop Hero to Platinum Donor. Build your legacy.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏥</div>
+        <h3>Hospital Integration</h3>
+        <p>Hospitals log in, submit patient requests with priority levels, and instantly see matched donors nearby.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <h3>Eligibility Check</h3>
+        <p>Every donor goes through a quick eligibility test before confirming a donation. Safe and responsible.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏦</div>
+        <h3>Blood Bank Dashboard</h3>
+        <p>Blood banks track live inventory, get auto-alerts when stock is critical, and manage donations in real time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>Donor Verification</h3>
+        <p>Verified donors get a red tick badge. Hospitals and blood banks can trust verified donors instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div style="text-align:center;margin-bottom:40px">
+    <p class="section-tag" style="text-align:center">Simple Process</p>
+    <h2 class="section-title" style="text-align:center">How BloodLink Works</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>Register as Donor</h3>
+      <p>Sign up with your blood group, campus, and basic health details in under 2 minutes.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>Get Notified</h3>
+      <p>Receive instant alerts when a patient nearby needs your blood group — critical cases first.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>Pass Eligibility</h3>
+      <p>Complete a quick eligibility check to confirm you're safe to donate on that day.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h3>Donate & Earn</h3>
+      <p>Donate blood, earn 10 points, unlock badges, and redeem rewards from our catalogue.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROLES SECTION -->
+<section class="roles-section">
+  <div style="text-align:center;margin-bottom:10px">
+    <p class="section-tag" style="color:#e74c3c;text-align:center">Three Roles. One Mission.</p>
+    <h2 class="section-title" style="color:white;text-align:center">Who Uses BloodLink?</h2>
+  </div>
+  <div class="roles-grid">
+    <div class="role-card donor">
+      <div class="role-icon">🩸</div>
+      <h3>Donors</h3>
+      <p>Kerala campus students and citizens who want to donate blood, earn rewards, track their history, and save lives.</p>
+      <button class="role-btn red" onclick="window.location.href='donor-register.html'">Register as Donor →</button>
+    </div>
+    <div class="role-card hospital">
+      <div class="role-icon">🏥</div>
+      <h3>Hospitals</h3>
+      <p>Hospitals submit patient blood requests with priority levels and instantly find matching verified donors nearby.</p>
+      <button class="role-btn blue" onclick="window.location.href='hospital-register.html'">Register Hospital →</button>
+    </div>
+    <div class="role-card bloodbank">
+      <div class="role-icon">🏦</div>
+      <h3>Blood Banks</h3>
+      <p>Blood banks manage live inventory, receive auto-alerts for critical shortages, and coordinate donor activations.</p>
+      <button class="role-btn green" onclick="window.location.href='bloodbank-register.html'">Register Blood Bank →</button>
+    </div>
+  </div>
+</section>
+
+<!-- REQUEST MODAL -->
+<div id="requestModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>🏥 Hospital Blood Request</h2>
+    <input id="patientName" placeholder="Patient Name" type="text">
+    <input id="patientAge" placeholder="Age" type="number">
+    <select id="patientGender"><option>Male</option><option>Female</option><option>Other</option></select>
+    <select id="bloodGroup">
+      <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+      <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+    </select>
+    <input id="hospitalName" placeholder="Hospital Name" type="text">
+    <select id="priority">
+      <option value="critical">🟥 Critical (Within 6 hours)</option>
+      <option value="urgent">🟧 Urgent (Within 24 hours)</option>
+      <option value="needed">🟨 Needed (2–3 days)</option>
+    </select>
+    <input id="unitsNeeded" placeholder="Units Needed" type="number" value="1">
+    <button onclick="submitRequest()" class="btn-primary" style="width:100%">Find Matching Donors</button>
+    <button onclick="closeRequestModal()" class="btn-close" style="width:100%;margin-top:8px">✕ Close</button>
+  </div>
+</div>
+
+<!-- MATCHED DONORS -->
+<div id="matchedDonors" class="matched-donors hidden">
+  <h3>✅ Matched Donors Nearby</h3>
+  <div id="donorsList"></div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Made with <span>❤️</span> for Kerala &nbsp;|&nbsp; BloodLink Kerala 2026 &nbsp;|&nbsp; Hackathon Project
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

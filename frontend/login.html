@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BloodLink</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Gradient Background and Core Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #FFF0F0 0%, #F0F8FF 100%);
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Redesigned Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      backdrop-filter: blur(5px);
+    }
+    .navbar .logo {
+      color: #333;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .navbar .btn-login {
+      background: linear-gradient(180deg, #E74C3C 0%, #C0392B 100%);
+      color: white;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(192, 57, 43, 0.3);
+    }
+    .navbar .btn-login:hover {
+      box-shadow: 0 4px 8px rgba(192, 57, 43, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Redesigned Form Container */
+    .form-container {
+      max-width: 420px;
+      margin: 60px auto;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Top Section with Dark Red Gradient */
+    .form-header-area {
+      background: linear-gradient(135deg, #C0392B 0%, #8E1C1C 100%);
+      padding: 30px;
+      color: #FFFFFF;
+    }
+    .form-header-area h2 {
+      text-align: center;
+      margin: 0 0 25px 0;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    /* Styled Form Elements */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #FFFFFF; /* Match white text on gradient background */
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.3);
+      font-size: 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      box-sizing: border-box;
+      transition: all 0.2s;
+    }
+    .form-group input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #FFFFFF;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Stylized Select Dropdown */
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 15px top 50%;
+      background-size: 12px auto;
+      color: #FFFFFF; /* Ensures visible text inside input */
+    }
+    .form-group select option {
+      background-color: #FFFFFF; /* Make text readable when dropdown is open */
+      color: #333333;
+    }
+
+    /* Redesigned Primary Button with Gradient */
+    .btn-primary {
+      background: linear-gradient(135deg, #F15F4C 0%, #E74C3C 100%);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Bottom Section with Bright Background */
+    .reg-section {
+      padding: 25px 30px 30px 30px;
+      background-color: #FFFFFF;
+      border-top: 1px solid #EEEEEE;
+    }
+    .reg-section p {
+      text-align: center;
+      color: #555555;
+      font-size: 15px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    /* Gradient Registration Cards */
+    .reg-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .reg-card {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .reg-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Specific Registration Card Colors */
+    .donor-link {
+      background: linear-gradient(90deg, #FFF0F0 0%, #FFE4E4 100%);
+      color: #C0392B;
+      border: 2px solid #C0392B;
+    }
+    .donor-link:hover { box-shadow: 0 4px 8px rgba(192, 57, 43, 0.2); }
+
+    .hosp-link {
+      background: linear-gradient(90deg, #F0F8FF 0%, #D8EBFF 100%);
+      color: #2980B9;
+      border: 2px solid #2980B9;
+    }
+    .hosp-link:hover { box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2); }
+
+    .bank-link {
+      background: linear-gradient(90deg, #F5F0FF 0%, #E6D8FF 100%);
+      color: #8E44AD;
+      border: 2px solid #8E44AD;
+    }
+    .bank-link:hover { box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2); }
+
+    /* Login Error Message Area */
+    #loginError {
+      color: #FF4D4D;
+      text-align: center;
+      margin-top: 15px;
+      min-height: 1.2em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">🩸 BloodLink Kerala</div>
+  <button onclick="window.location.href='index.html'" class="btn-login">Home</button>
+</nav>
+
+<div class="form-container">
+  
+  <div class="form-header-area">
+    <h2>🔐 Login</h2>
+    
+    <div class="form-group">
+      <label>Username / Phone Number</label>
+      <input id="identifier" placeholder="Enter username or phone number" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input id="password" placeholder="Enter password" type="password">
+    </div>
+
+    <div class="form-group">
+      <label>Login as</label>
+      <select id="loginRole">
+        <option value="donor">🩸 Donor</option>
+        <option value="hospital">🏥 Hospital</option>
+        <option value="bloodbank">🏦 Blood Bank</option>
+      </select>
+    </div>
+
+    <button type="button" onclick="handleLogin()" class="btn-primary">Login</button>
+  </div>
+
+  <div class="reg-section">
+    <p>Don't have an account?</p>
+    <div class="reg-list">
+      <a href="donor-register.html" class="reg-card donor-link">
+        🩸 Register as Donor
+      </a>
+      <a href="hospital-register.html" class="reg-card hosp-link">
+        🏥 Register as Hospital
+      </a>
+      <a href="bloodbank-register.html" class="reg-card bank-link">
+        🏦 Register as Blood Bank
+      </a>
+    </div>
+
+    <p id="loginError"></p>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

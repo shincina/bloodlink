@@ -1,0 +1,75 @@
+# BloodLink Kerala — API Documentation
+
+Base URL: `http://127.0.0.1:5000/api`
+
+All protected endpoints require:
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+## Auth Endpoints
+
+### POST /auth/register
+Register a new user (donor/hospital/bloodbank).
+
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "phone": "9876543210",
+  "password": "securepassword",
+  "role": "donor",
+  "blood_group": "O+",
+  "age": 22,
+  "campus": "CUSAT"
+}
+```
+
+### POST /auth/login
+**Request Body:**
+```json
+{ "identifier": "9876543210", "password": "securepassword" }
+```
+**Response:**
+```json
+{ "token": "eyJhbGci...", "role": "donor", "name": "John Doe", "blood_group": "O+" }
+```
+
+## Donor Endpoints (Auth Required)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/donor/leaderboard` | Top 10 donors (public) |
+| GET | `/donor/history` | Donation history |
+| GET | `/donor/notifications` | Blood request alerts |
+| POST | `/donor/eligibility` | Check eligibility |
+| POST | `/donor/donate` | Record donation (+10 pts) |
+
+## Hospital Endpoints (Auth Required)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/hospital/request` | Submit patient blood request |
+| GET | `/hospital/requests` | Hospital's request history |
+| GET | `/hospital/public-requests` | All open requests (public) |
+
+## Blood Bank Endpoints (Auth Required)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/bloodbank/stock` | Current stock levels |
+| POST | `/bloodbank/stock/update` | Update stock |
+
+## Rewards Endpoints (Auth Required)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/rewards/my-rewards` | Points, badges, catalogue |
+
+## Priority Levels
+
+| Value | Meaning |
+|-------|---------|
+| `critical` | Within 6 hours — triggers red emergency banner on all donors |
+| `urgent` | Within 24 hours |
+| `needed` | Within 2–3 days |

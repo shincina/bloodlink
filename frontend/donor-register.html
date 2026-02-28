@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8"><title>Register - BloodLink</title>
+  <link rel="stylesheet" href="css/style.css">
+</head><body>
+<nav class="navbar">
+  <div class="logo">🩸 BloodLink Kerala</div>
+  <button onclick="window.location.href='login.html'" class="btn-login">Login</button>
+</nav>
+<div class="form-container" style="max-width:550px">
+  <h2>🩸 Donor Registration</h2>
+  <div class="form-group"><label>Full Name</label><input id="regName" type="text" placeholder="Your full name"></div>
+  <div class="form-group"><label>Phone Number</label><input id="regPhone" type="tel" placeholder="+91 XXXXXXXXXX"></div>
+  <div class="form-group"><label>Email</label><input id="regEmail" type="email" placeholder="your@email.com"></div>
+  <div class="form-group"><label>Password</label><input id="regPassword" type="password"></div>
+  <div class="form-group"><label>Blood Group</label>
+    <select id="regBlood">
+      <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+      <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+    </select>
+  </div>
+  <div class="form-group"><label>Age</label><input id="regAge" type="number" placeholder="Age"></div>
+  <div class="form-group"><label>Campus/College</label><input id="regCampus" type="text" placeholder="College name"></div>
+  <div class="form-group"><label>📍 District</label>
+    <select id="regDistrict">
+      <option>Thiruvananthapuram</option><option>Kollam</option><option>Pathanamthitta</option>
+      <option>Alappuzha</option><option>Kottayam</option><option>Idukki</option>
+      <option>Ernakulam</option><option>Thrissur</option><option>Palakkad</option>
+      <option>Malappuram</option><option>Kozhikode</option><option>Wayanad</option>
+      <option>Kannur</option><option>Kasaragod</option>
+    </select>
+  </div>
+  <h3 style="margin:15px 0 10px;color:#c0392b">Medical Criteria</h3>
+  <div class="checkbox-group"><input type="checkbox" id="chkHIV"><label for="chkHIV">I have HIV</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="chkAIDS"><label for="chkAIDS">I have AIDS</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="chkDiabetes"><label for="chkDiabetes">I have Diabetes</label></div>
+  <div class="checkbox-group"><input type="checkbox" id="chkHeartDisease"><label for="chkHeartDisease">I have Heart Disease</label></div>
+  <p style="color:#888;font-size:0.85rem;margin-bottom:15px">⚠️ Donors with HIV or AIDS cannot donate blood.</p>
+  <button type="button" onclick="handleRegister()" class="btn-primary" style="width:100%">Register</button>
+  <p id="regError" style="color:red;text-align:center;margin-top:10px"></p>
+</div>
+<script src="js/auth.js"></script>
+</body></html>
