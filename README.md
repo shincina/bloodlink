@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="./img.png" alt="BloodLink Kerala Banner" width="100%">
-</p>
+
 
 # 🩸 BloodLink Kerala 🎯
 
@@ -18,8 +16,8 @@ Byte Glitch
 ---
 
 ### Hosted Project Link
-🔗 [Live Demo Link](#)  
-📹 [Demo Video Link](#)
+🔗 [[Live Demo Link](#) ](https://github.com/shincina/bloodlink.git) 
+📹 [Demo Video Link](#)https://youtu.be/KpsGaCgKg5o
 
 ---
 
@@ -76,8 +74,8 @@ BloodLink Kerala provides a centralized digital ecosystem that enables real-time
 #### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/bloodlink-kerala.git
-cd bloodlink-kerala
+git clone https://github.com/shincina/bloodlink.git
+cd bloodlink
 ```
 
 #### Backend Setup
@@ -120,15 +118,32 @@ http://127.0.0.1:5500
 ### For Software:
 
 #### Screenshots (Add at least 3)
+![Home Page]
+<img width="1910" height="902" alt="image" src="https://github.com/user-attachments/assets/d0e825f0-2d7d-4172-b395-920f01e4d554" />
 
-![Landing Page](docs/screenshots/homepage.png)
-*Landing page showing login, registration and emergency alerts*
+![Login Page](docs/screenshots/homepage.png)
+*Login page which redirects donors,hospitals,blood banks to their respective dashboard*
+<img width="1897" height="913" alt="image" src="https://github.com/user-attachments/assets/10c0c5cc-35b3-4994-b3a6-1101fa696dd4" />
 
-![Donor Dashboard](docs/screenshots/donor.png)
+
+![Donor Registration and Dashboard](docs/screenshots/donor.png)
+*Donor dashboard with emergency banner,donation tracking and reward system*
+<img width="1913" height="888" alt="image" src="https://github.com/user-attachments/assets/c6c62324-4627-4d88-8171-92489fff1dab" />
+
+<img width="1913" height="918" alt="image" src="https://github.com/user-attachments/assets/f1a83760-03a6-45e7-8cdf-56f80b43f3cf" />
+<img width="1912" height="906" alt="image" src="https://github.com/user-attachments/assets/687c4688-024d-4068-90df-e5ab1a54bbc8" />
+
+![Hopsital Registration and Dashboard](docs/screenshots/donor.png)
 *Donor dashboard with emergency banner and donation tracking*
+<img width="1912" height="908" alt="image" src="https://github.com/user-attachments/assets/a9eb7a28-946d-4196-8229-a8f49dbdad12" />
+<img width="1900" height="903" alt="image" src="https://github.com/user-attachments/assets/c4c3860b-49e7-4af9-b52a-684ce1acf5b8" />
 
-![Hospital Dashboard](docs/screenshots/hospital.png)
-*Hospital dashboard for submitting and managing blood requests*
+
+
+![Blood bank Dashboard](docs/screenshots/hospital.png)
+*blood bank dashboard managing various blood stock level*
+<img width="1907" height="912" alt="image" src="https://github.com/user-attachments/assets/fd0baafc-fef7-434e-a2a3-acf7ab7416cc" />
+
 
 ---
 
@@ -222,7 +237,7 @@ http://127.0.0.1:5500
 ## Project Demo
 
 ### Video
-[Add demo video link here]
+[[Add demo video link here]](https://youtu.be/KpsGaCgKg5o)
 
 *The video demonstrates emergency alert triggering, donor matching, eligibility screening, and reward point redemption.*
 
@@ -230,7 +245,7 @@ http://127.0.0.1:5500
 
 ## AI Tools Used (For Transparency Bonus)
 
-**Tool Used:** Claude (Anthropic), ChatGPT  
+**Tool Used:**Gemini AI, ChatGPT  
 
 **Purpose:**
 - Backend route structure generation  
@@ -238,7 +253,7 @@ http://127.0.0.1:5500
 - API design suggestions  
 - README structuring  
 
-**Percentage of AI-generated code:** ~15%
+**Percentage of AI-generated code:** ~75%
 
 **Human Contributions:**
 - Complete system architecture design  
